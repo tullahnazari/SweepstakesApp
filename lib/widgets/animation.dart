@@ -1,24 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
-class SweepstakesOverview extends StatelessWidget {
+class Animation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-          child: Container(
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 110,),
-            // Image(
-            //   image: NetworkImage('https://www.giveawaymonkey.com/wp-content/uploads/2019/09/scratched-textured-enter-to-win-stamp-seal-vector-21476418.jpg'), 
-            //   height: 500, 
-            //   width: 300,
-            // ),
-            
-            Container(
-              color: Color(0xff027FBF),
-              child: Column(
+    return Column(
                 
                 crossAxisAlignment: CrossAxisAlignment.center,
                 
@@ -37,23 +23,6 @@ class SweepstakesOverview extends StatelessWidget {
                     alignment: Alignment.center // or Alignment.topLeft
                   ),
           ],
-              ),
-            ),
-            SizedBox(height: 240,),
-            Container(
-              height: 180,
-              width: 220,
-              child: Image(image: NetworkImage('https://www.connemarathon.com/wp-content/uploads/2014/09/click-to-enter-smaller.jpg'),)
-            ),
-
-
-          ],
-
-
-        ),
-
-        
-      ),
-    );
+              );
   }
 }
