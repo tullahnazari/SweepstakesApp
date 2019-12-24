@@ -1,59 +1,82 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
+import 'package:sweepstakes/widgets/animation.dart';
 
-class SweepstakesOverview extends StatelessWidget {
+class SweepstakesOverview extends StatefulWidget {
+  @override
+  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
+}
+
+class _SweepstakesOverviewState extends State<SweepstakesOverview> {
+  static final double containerHeight = 300.0;
+  double clipHeight = containerHeight * 0.35;
+  DiagonalPosition position = DiagonalPosition.BOTTOM_LEFT;
   @override
   Widget build(BuildContext context) {
-    return Material(
-          child: Container(
-        color: Colors.white,
-        child: Column(
+    return Scaffold(
+        body: Column(
+      children: <Widget>[
+        Stack(
+          overflow: Overflow.visible,
           children: <Widget>[
-            SizedBox(height: 110,),
-            // Image(
-            //   image: NetworkImage('https://www.giveawaymonkey.com/wp-content/uploads/2019/09/scratched-textured-enter-to-win-stamp-seal-vector-21476418.jpg'), 
-            //   height: 500, 
-            //   width: 300,
-            // ),
-            
-            Container(
-              color: Color(0xff027FBF),
-              child: Column(
-                
-                crossAxisAlignment: CrossAxisAlignment.center,
-                
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                 SizedBox(width: 20.0, height: 100.0),
-                  Text(
-                  "To Win:",
-                     style: TextStyle(fontSize: 43.0, color: Color(0xffFFFFFF)),
-                        ),
-                  SizedBox(width: 20.0, height: 20.0),
-                  RotateAnimatedTextKit(
-                    text: ["CLICK TO ENTER BELOW", "DRAWING IS 9PM CST", "         GOOD LUCK!"],
-                    textStyle: TextStyle(fontSize: 40.0, fontFamily: "Horizon", color: Color(0xffFFFFFF)),
-                    textAlign: TextAlign.center,
-                    alignment: Alignment.center // or Alignment.topLeft
-                  ),
-          ],
+            Diagonal(
+              clipShadows: [ClipShadow(color: Colors.black)],
+              position: position,
+              clipHeight: clipHeight,
+              child: Container(
+                color: Colors.red,
+                height: 500,
               ),
             ),
-            SizedBox(height: 240,),
-            Container(
-              height: 180,
-              width: 220,
-              child: Image(image: NetworkImage('https://www.connemarathon.com/wp-content/uploads/2014/09/click-to-enter-smaller.jpg'),)
+            Positioned(
+                bottom: 0.0,
+                right: 0.0,
+                left: 0.0,
+                top: 0.0,
+                child: Center(
+                  child: AnimationWidget(),
+                )),
+            Positioned(
+              bottom: -60.0,
+              right: 0.0,
+              left: 0.0,
+              height: 140.0,
+              child: AspectRatio(
+                aspectRatio: 300 / 145,
+                child: Image.asset(
+                  'assets/car.png',
+                ),
+              ),
             ),
-
-
           ],
-
-
         ),
-
-        
-      ),
-    );
+        SizedBox(height: 60.0),
+        RaisedButton(
+          child: Text('Enter to Win'),
+          onPressed: () {
+            // setState(() {
+            //   if (position == DiagonalPosition.BOTTOM_LEFT) {
+            //     position = DiagonalPosition.BOTTOM_RIGHT;
+            //   } else {
+            //     position = DiagonalPosition.BOTTOM_LEFT;
+            //   }
+            // });
+          },
+        ),
+        RaisedButton(
+          child: Text('View Restrictions'),
+          onPressed: () {
+            // setState(() {
+            //   if (clipHeight == containerHeight * 0.35) {
+            //     clipHeight = containerHeight * 0.10;
+            //   } else {
+            //     clipHeight = containerHeight * 0.35;
+            //   }
+            // });
+          },
+        )
+      ],
+    ));
   }
 }
