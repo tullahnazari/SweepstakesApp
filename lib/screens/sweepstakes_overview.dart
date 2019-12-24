@@ -1,82 +1,43 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
-import 'package:sweepstakes/widgets/animation.dart';
+import 'package:sweepstakes/models/sweepstake.dart';
+import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatefulWidget {
-  @override
-  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
-}
+class SweepstakesOverview extends StatelessWidget {
 
-class _SweepstakesOverviewState extends State<SweepstakesOverview> {
-  static final double containerHeight = 300.0;
-  double clipHeight = containerHeight * 0.35;
-  DiagonalPosition position = DiagonalPosition.BOTTOM_LEFT;
+  final List<Sweepstake> loadedSweepstake = [
+    Sweepstake(
+      id: '1',
+      title: 'Jordan 1s Chi-town',
+      imageUrl: 'https://sneakernews.com/wp-content/uploads/2019/10/Air-Jordan-1-High-Fearless-Les-Twins-CK5666_100-1.jpg',
+      price: 299.99,
+
+      ),
+      Sweepstake(
+      id: '2',
+      title: '',
+      imageUrl: 'https://images-na.ssl-images-amazon.com/images/I/81Nu4cpJ9JL._SL1500_.jpg',
+      price: 299.99,
+
+      ),
+
+  ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Diagonal(
-              clipShadows: [ClipShadow(color: Colors.black)],
-              position: position,
-              clipHeight: clipHeight,
-              child: Container(
-                color: Colors.red,
-                height: 500,
-              ),
-            ),
-            Positioned(
-                bottom: 0.0,
-                right: 0.0,
-                left: 0.0,
-                top: 0.0,
-                child: Center(
-                  child: AnimationWidget(),
-                )),
-            Positioned(
-              bottom: -60.0,
-              right: 0.0,
-              left: 0.0,
-              height: 140.0,
-              child: AspectRatio(
-                aspectRatio: 300 / 145,
-                child: Image.asset(
-                  'assets/car.png',
-                ),
-              ),
-            ),
-          ],
+    return Material(
+      child: ListView.builder(
+        padding: const EdgeInsets.all(15),
+        itemCount: loadedSweepstake.length,
+        itemBuilder: (ctx, i) => SweepstakeItems(
+          id: loadedSweepstake[i].id,
+          title: loadedSweepstake[i].title,
+          imageUrl: loadedSweepstake[i].imageUrl,
+
+
+
         ),
-        SizedBox(height: 60.0),
-        RaisedButton(
-          child: Text('Enter to Win'),
-          onPressed: () {
-            // setState(() {
-            //   if (position == DiagonalPosition.BOTTOM_LEFT) {
-            //     position = DiagonalPosition.BOTTOM_RIGHT;
-            //   } else {
-            //     position = DiagonalPosition.BOTTOM_LEFT;
-            //   }
-            // });
-          },
-        ),
-        RaisedButton(
-          child: Text('View Restrictions'),
-          onPressed: () {
-            // setState(() {
-            //   if (clipHeight == containerHeight * 0.35) {
-            //     clipHeight = containerHeight * 0.10;
-            //   } else {
-            //     clipHeight = containerHeight * 0.35;
-            //   }
-            // });
-          },
-        )
-      ],
-    ));
+        scrollDirection: Axis.horizontal,
+      ),
+      
+    );
   }
 }
