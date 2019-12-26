@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 
 class ResultItem {
@@ -14,6 +16,16 @@ class Result with ChangeNotifier {
 
   Map<String, ResultItem> get items {
     return {...items};
+  }
+
+  //generating random number
+  int get generateRandomNumber {
+    var rnd = new Random();
+    var next = rnd.nextDouble() * 1000000;
+    while (next < 100000) {
+      next *= 10;
+    }
+    return next.toInt();
   }
 
   void addItem(

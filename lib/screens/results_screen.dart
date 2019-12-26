@@ -10,42 +10,20 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final resultItems = Provider.of<Result>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Cart'),
-      ),
-      body: Column(
-        children: <Widget>[
-          Card(
-            margin: EdgeInsets.all(15),
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'some title',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Spacer(),
-                  Chip(
-                    label: Text(
-                      'Random Number',
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).primaryTextTheme.title.color),
-                    ),
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  FlatButton(
-                    child: Text("Order Now"),
-                    onPressed: () {},
-                    textColor: Theme.of(context).primaryColor,
-                  ),
-                ],
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 70,
+            ),
+            Center(
+              child: Text(
+                'Your Number is: ',
+                style: TextStyle(fontSize: 34),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
