@@ -1,21 +1,21 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
-import 'package:sweepstakes/models/sweepstake.dart';
+import 'package:provider/provider.dart';
+import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/animation.dart';
 
-class SweepstakesDetail extends StatefulWidget {
-  @override
-  _SweepstakesDetailState createState() => _SweepstakesDetailState();
-}
+class SweepstakesDetail extends StatelessWidget {
+  static const routeName = '/sweepstakedetail';
 
-class _SweepstakesDetailState extends State<SweepstakesDetail> {
-  
   static final double containerHeight = 300.0;
   double clipHeight = containerHeight * 0.35;
   DiagonalPosition position = DiagonalPosition.BOTTOM_LEFT;
   @override
   Widget build(BuildContext context) {
+    final sweepstakeId = ModalRoute.of(context).settings.arguments as String;
+    final loadedSweepstake =
+        Provider.of<Sweepstakes>(context).findById(sweepstakeId);
+
     return Scaffold(
         body: Column(
       children: <Widget>[
@@ -46,14 +46,18 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
               height: 140.0,
               child: AspectRatio(
                 aspectRatio: 300 / 145,
-                child: Image.asset(
-                  'assets/car.png',
+                child: Image.network(
+                  loadedSweepstake.imageUrl,
                 ),
               ),
             ),
           ],
         ),
-        SizedBox(height: 60.0),
+        SizedBox(height: 12.0),
+        Text(loadedSweepstake.title),
+        SizedBox(
+          height: 220,
+        ),
         RaisedButton(
           child: Text('Enter to Win'),
           onPressed: () {
