@@ -11,7 +11,10 @@ class SweepstakesOverview extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Active Promos'),
+        title: Text(
+          'Active Promos',
+          style: TextStyle(color: Theme.of(context).accentColor),
+        ),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(15),

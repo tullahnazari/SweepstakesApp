@@ -5,7 +5,7 @@ class Sweepstakes with ChangeNotifier {
   List<Sweepstake> _items = [
     Sweepstake(
         id: '1',
-        title: 'Jordan 1s Chi-town',
+        title: 'Jordan 1s',
         imageUrl:
             'https://sneakernews.com/wp-content/uploads/2019/10/Air-Jordan-1-High-Fearless-Les-Twins-CK5666_100-1.jpg',
         price: 299.99,

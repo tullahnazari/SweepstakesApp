@@ -17,72 +17,91 @@ class SweepstakesDetail extends StatelessWidget {
         Provider.of<Sweepstakes>(context).findById(sweepstakeId);
 
     return Scaffold(
+        appBar: AppBar(
+            title: Text(
+          loadedSweepstake.title,
+          style: TextStyle(color: Theme.of(context).accentColor),
+        )),
         body: Column(
-      children: <Widget>[
-        Stack(
-          overflow: Overflow.visible,
           children: <Widget>[
-            Diagonal(
-              clipShadows: [ClipShadow(color: Colors.black)],
-              position: position,
-              clipHeight: clipHeight,
-              child: Container(
-                color: Colors.red,
-                height: 500,
-              ),
-            ),
-            Positioned(
-                bottom: 0.0,
-                right: 0.0,
-                left: 0.0,
-                top: 0.0,
-                child: Center(
-                  child: AnimationWidget(),
-                )),
-            Positioned(
-              bottom: -60.0,
-              right: 0.0,
-              left: 0.0,
-              height: 140.0,
-              child: AspectRatio(
-                aspectRatio: 300 / 145,
-                child: Image.network(
-                  loadedSweepstake.imageUrl,
+            Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Diagonal(
+                  clipShadows: [ClipShadow(color: Colors.black)],
+                  position: position,
+                  clipHeight: clipHeight,
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                    height: 500,
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 220.0,
+                  right: 0.0,
+                  left: 0.0,
+                  height: 350.0,
+                  child: AspectRatio(
+                    aspectRatio: 300 / 145,
+                    child: AnimationWidget(),
+                  ),
+                ),
+                Positioned(
+                  bottom: -0.0,
+                  right: 0.0,
+                  left: 0.0,
+                  height: 230.0,
+                  child: AspectRatio(
+                    aspectRatio: 300 / 145,
+                    child: Image.network(
+                      loadedSweepstake.imageUrl,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -260.0,
+                  right: 0.0,
+                  left: 0.0,
+                  height: 250.0,
+                  child: AspectRatio(
+                    aspectRatio: 300 / 145,
+                    child: Text(
+                      '\$${loadedSweepstake.price.toString()}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 23),
+                    ),
+                  ),
+                ),
+              ],
             ),
+            SizedBox(
+              height: 125,
+            ),
+            RaisedButton(
+              child: Text('Enter to Win'),
+              onPressed: () {
+                // setState(() {
+                //   if (position == DiagonalPosition.BOTTOM_LEFT) {
+                //     position = DiagonalPosition.BOTTOM_RIGHT;
+                //   } else {
+                //     position = DiagonalPosition.BOTTOM_LEFT;
+                //   }
+                // });
+              },
+            ),
+            RaisedButton(
+              child: Text('View Restrictions'),
+              onPressed: () {
+                // setState(() {
+                //   if (clipHeight == containerHeight * 0.35) {
+                //     clipHeight = containerHeight * 0.10;
+                //   } else {
+                //     clipHeight = containerHeight * 0.35;
+                //   }
+                // });
+              },
+            )
           ],
-        ),
-        SizedBox(height: 12.0),
-        Text(loadedSweepstake.title),
-        SizedBox(
-          height: 220,
-        ),
-        RaisedButton(
-          child: Text('Enter to Win'),
-          onPressed: () {
-            // setState(() {
-            //   if (position == DiagonalPosition.BOTTOM_LEFT) {
-            //     position = DiagonalPosition.BOTTOM_RIGHT;
-            //   } else {
-            //     position = DiagonalPosition.BOTTOM_LEFT;
-            //   }
-            // });
-          },
-        ),
-        RaisedButton(
-          child: Text('View Restrictions'),
-          onPressed: () {
-            // setState(() {
-            //   if (clipHeight == containerHeight * 0.35) {
-            //     clipHeight = containerHeight * 0.10;
-            //   } else {
-            //     clipHeight = containerHeight * 0.35;
-            //   }
-            // });
-          },
-        )
-      ],
-    ));
+        ));
   }
 }

@@ -35,6 +35,9 @@ class SweepstakeItems extends StatelessWidget {
         Row(
           children: <Widget>[
             Icon(Icons.timer),
+            SizedBox(
+              width: 3,
+            ),
             Text('ends ${dateTime}', style: TextStyle(fontSize: 18)),
             Spacer(),
             Text(
@@ -42,10 +45,6 @@ class SweepstakeItems extends StatelessWidget {
               style: TextStyle(fontSize: 18),
               textAlign: TextAlign.right,
             ),
-            SizedBox(
-              width: 4,
-            ),
-            Text('\$${price.toString()}'),
           ],
         ),
       ],

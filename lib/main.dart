@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Sweepstakes',
         theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          accentColor: Colors.deepPurple,
+          primaryColor: Colors.amber,
+          accentColor: Colors.white,
           fontFamily: 'Lato',
         ),
         home: SweepstakesOverview(),
