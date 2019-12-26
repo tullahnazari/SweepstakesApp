@@ -1,82 +1,37 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
-import 'package:sweepstakes/widgets/animation.dart';
+import 'package:provider/provider.dart';
+import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatefulWidget {
-  @override
-  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
-}
-
-class _SweepstakesOverviewState extends State<SweepstakesOverview> {
-  static final double containerHeight = 300.0;
-  double clipHeight = containerHeight * 0.35;
-  DiagonalPosition position = DiagonalPosition.BOTTOM_LEFT;
+class SweepstakesOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final loadedSweepstakeData = Provider.of<Sweepstakes>(context);
+    final loadedSweepstake = loadedSweepstakeData.items;
+
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Diagonal(
-              clipShadows: [ClipShadow(color: Colors.black)],
-              position: position,
-              clipHeight: clipHeight,
-              child: Container(
-                color: Colors.red,
-                height: 500,
-              ),
-            ),
-            Positioned(
-                bottom: 0.0,
-                right: 0.0,
-                left: 0.0,
-                top: 0.0,
-                child: Center(
-                  child: AnimationWidget(),
-                )),
-            Positioned(
-              bottom: -60.0,
-              right: 0.0,
-              left: 0.0,
-              height: 140.0,
-              child: AspectRatio(
-                aspectRatio: 300 / 145,
-                child: Image.asset(
-                  'assets/car.png',
-                ),
-              ),
-            ),
-          ],
+      drawer: Drawer(),
+      appBar: AppBar(
+        actions: <Widget>[
+          Icon(Icons.notifications),
+        ],
+        title: Text(
+          'Active Sweeps',
+          style: TextStyle(color: Theme.of(context).accentColor),
         ),
-        SizedBox(height: 60.0),
-        RaisedButton(
-          child: Text('Enter to Win'),
-          onPressed: () {
-            // setState(() {
-            //   if (position == DiagonalPosition.BOTTOM_LEFT) {
-            //     position = DiagonalPosition.BOTTOM_RIGHT;
-            //   } else {
-            //     position = DiagonalPosition.BOTTOM_LEFT;
-            //   }
-            // });
-          },
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(15),
+        itemCount: loadedSweepstake.length,
+        itemBuilder: (ctx, i) => SweepstakeItems(
+          id: loadedSweepstake[i].id,
+          title: loadedSweepstake[i].title,
+          imageUrl: loadedSweepstake[i].imageUrl,
+          price: loadedSweepstake[i].price,
+          dateTime: loadedSweepstake[i].dateTime,
         ),
-        RaisedButton(
-          child: Text('View Restrictions'),
-          onPressed: () {
-            // setState(() {
-            //   if (clipHeight == containerHeight * 0.35) {
-            //     clipHeight = containerHeight * 0.10;
-            //   } else {
-            //     clipHeight = containerHeight * 0.35;
-            //   }
-            // });
-          },
-        )
-      ],
-    ));
+        scrollDirection: Axis.vertical,
+      ),
+    );
   }
 }
