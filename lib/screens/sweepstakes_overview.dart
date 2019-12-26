@@ -10,9 +10,13 @@ class SweepstakesOverview extends StatelessWidget {
     final loadedSweepstake = loadedSweepstakeData.items;
 
     return Scaffold(
+      drawer: Drawer(),
       appBar: AppBar(
+        actions: <Widget>[
+          Icon(Icons.notifications),
+        ],
         title: Text(
-          'Active Promos',
+          'Active Sweeps',
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
       ),
