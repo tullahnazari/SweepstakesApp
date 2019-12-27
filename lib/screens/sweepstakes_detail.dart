@@ -1,7 +1,9 @@
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/widgets/animation.dart';
 
 class SweepstakesDetail extends StatelessWidget {
@@ -15,6 +17,7 @@ class SweepstakesDetail extends StatelessWidget {
     final sweepstakeId = ModalRoute.of(context).settings.arguments as String;
     final loadedSweepstake =
         Provider.of<Sweepstakes>(context).findById(sweepstakeId);
+    final result = Provider.of<Result>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -87,6 +90,10 @@ class SweepstakesDetail extends StatelessWidget {
                 //     position = DiagonalPosition.BOTTOM_LEFT;
                 //   }
                 // });
+
+                result.addItem(loadedSweepstake.id,
+                    loadedSweepstake.randomNumber, loadedSweepstake.title);
+                Navigator.of(context).pushNamed(ResultScreen.routeName);
               },
             ),
             RaisedButton(
