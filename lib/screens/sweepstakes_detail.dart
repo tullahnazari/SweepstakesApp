@@ -1,7 +1,7 @@
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/providers/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/widgets/animation.dart';

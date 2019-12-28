@@ -49,8 +49,30 @@ class Sweepstakes with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct() {
-    //_items.add(value);
+  void updateProduct(String id, Sweepstake newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('Sweepstake does not exist');
+    }
+  }
+
+  void addProduct(Sweepstake product) {
+    final newProduct = Sweepstake(
+      title: product.title,
+      dateTime: product.dateTime,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      id: product.dateTime,
+    );
+    _items.add(newProduct);
+    notifyListeners();
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }

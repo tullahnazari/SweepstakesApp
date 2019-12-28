@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/providers/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
+import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
 
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Result(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Sweepstakes',
@@ -33,6 +35,8 @@ class MyApp extends StatelessWidget {
         routes: {
           SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
           ResultScreen.routeName: (ctx) => ResultScreen(),
+          AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
+          SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
         },
       ),
     );

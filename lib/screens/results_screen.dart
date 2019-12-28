@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/providers/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -19,6 +19,15 @@ class ResultScreen extends StatelessWidget {
             Center(
               child: Text(
                 'Your Number is: ',
+                style: TextStyle(fontSize: 34),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Center(
+              child: Text(
+                resultItems.generateRandomNumber.toString(),
                 style: TextStyle(fontSize: 34),
               ),
             ),
