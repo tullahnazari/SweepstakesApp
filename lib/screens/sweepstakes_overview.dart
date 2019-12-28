@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatelessWidget {
@@ -10,7 +11,7 @@ class SweepstakesOverview extends StatelessWidget {
     final loadedSweepstake = loadedSweepstakeData.items;
 
     return Scaffold(
-      drawer: Drawer(),
+      drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
           Icon(Icons.notifications),
