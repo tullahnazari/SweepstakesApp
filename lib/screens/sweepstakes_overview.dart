@@ -5,6 +5,7 @@ import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatelessWidget {
+  static const routeName = '/sweepstakeoverview';
   @override
   Widget build(BuildContext context) {
     final loadedSweepstakeData = Provider.of<Sweepstakes>(context);

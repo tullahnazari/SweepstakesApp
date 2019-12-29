@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
           ResultScreen.routeName: (ctx) => ResultScreen(),
           AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
           SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
+          SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
         },
       ),
     );

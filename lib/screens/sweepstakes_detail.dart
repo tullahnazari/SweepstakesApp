@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/sweepstake.dart';
 import 'package:sweepstakes/providers/ads.dart';
 import 'package:sweepstakes/providers/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
@@ -556,10 +557,9 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
               //   }
               // });
               ads.showVideoAd(state: this);
+              Future.delayed(const Duration(seconds: 5));
 
-              result.addItem(loadedSweepstake.id, loadedSweepstake.randomNumber,
-                  loadedSweepstake.title);
-              Navigator.of(context).pushNamed(ResultScreen.routeName);
+              navigateToNextPage(result, loadedSweepstake, context);
             },
           ),
           RaisedButton(
@@ -577,5 +577,13 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
         ],
       ),
     );
+  }
+
+  Future<void> navigateToNextPage(
+      Result result, Sweepstake loadedSweepstake, BuildContext context) async {
+    await result.addItem(loadedSweepstake.id, loadedSweepstake.randomNumber,
+        loadedSweepstake.title);
+    await Navigator.of(context).pushNamed(ResultScreen.routeName);
+    print('navigate to next page');
   }
 }
