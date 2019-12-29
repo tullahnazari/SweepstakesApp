@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.white,
           fontFamily: 'Lato',
         ),
-        home: SweepstakesOverview(),
+        home: //AdPage(),
+            SweepstakesOverview(),
         routes: {
           SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
           ResultScreen.routeName: (ctx) => ResultScreen(),

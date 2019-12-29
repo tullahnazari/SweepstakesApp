@@ -1,34 +1,27 @@
-import 'dart:io';
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
-import 'package:clippy_flutter/diagonal.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sweepstakes/providers/ads.dart';
-import 'package:sweepstakes/providers/result.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/results_screen.dart';
-import 'package:sweepstakes/widgets/animation.dart';
+import 'dart:io' show Platform;
 import 'package:firebase_admob/firebase_admob.dart';
 
-import 'adPage.dart';
+import 'package:ads/ads.dart';
 
+/// Made a high-level variable to be accessible to ads_test.dart
 Ads ads;
 
-class SweepstakesDetail extends StatefulWidget {
-  const SweepstakesDetail({this.initOption, Key key}) : super(key: key);
+class AdPage extends StatefulWidget {
+  const AdPage({this.initOption, Key key}) : super(key: key);
 
   final int initOption;
-  static const routeName = '/sweepstakedetail';
-
-  static final double containerHeight = 300.0;
-
   @override
-  _SweepstakesDetailState createState() =>
-      _SweepstakesDetailState(initOption: initOption);
+  _AdPageState createState() => _AdPageState(initOption: initOption);
 }
 
-class _SweepstakesDetailState extends State<SweepstakesDetail> {
-  _SweepstakesDetailState({this.initOption = 1});
+class _AdPageState extends State<AdPage> {
+  _AdPageState({this.initOption = 1});
+
   final int initOption;
   int _coins = 0;
 
@@ -83,6 +76,8 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
             print("User has opened and now closed the ad.");
           }
         };
+
+        /// You can set the Banner, Fullscreen and Video Ads separately.
 
         ads.setBannerAd(
           adUnitId: bannerUnitId,
@@ -473,108 +468,58 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
     super.dispose();
   }
 
-  double clipHeight = SweepstakesDetail.containerHeight * 0.35;
-
-  DiagonalPosition position = DiagonalPosition.BOTTOM_LEFT;
-
   @override
   Widget build(BuildContext context) {
-    final sweepstakeId = ModalRoute.of(context).settings.arguments as String;
-    final loadedSweepstake =
-        Provider.of<Sweepstakes>(context).findById(sweepstakeId);
-    final result = Provider.of<Result>(context, listen: false);
-
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        loadedSweepstake.title,
-        style: TextStyle(color: Theme.of(context).accentColor),
-      )),
-      body: Column(
-        children: <Widget>[
-          Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Diagonal(
-                clipShadows: [ClipShadow(color: Colors.black)],
-                position: position,
-                clipHeight: clipHeight,
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                  height: 500,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('AdMob Plugin example app'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                RaisedButton(
+                    key: ValueKey<String>('SHOW BANNER'),
+                    child: const Text('SHOW BANNER'),
+                    onPressed: () {
+                      ads.showBannerAd(state: this, anchorOffset: null);
+                    }),
+                RaisedButton(
+                    key: ValueKey<String>('REMOVE BANNER'),
+                    child: const Text('REMOVE BANNER'),
+                    onPressed: () {
+                      ads.closeBannerAd();
+                    }),
+                RaisedButton(
+                  key: ValueKey<String>('SHOW INTERSTITIAL'),
+                  child: const Text('SHOW INTERSTITIAL'),
+                  onPressed: () {
+                    ads.showFullScreenAd(state: this);
+                  },
                 ),
-              ),
-              Positioned(
-                bottom: 220.0,
-                right: 0.0,
-                left: 0.0,
-                height: 350.0,
-                child: AspectRatio(
-                  aspectRatio: 300 / 145,
-                  child: AnimationWidget(),
+                RaisedButton(
+                  key: ValueKey<String>('SHOW REWARDED VIDEO'),
+                  child: const Text('SHOW REWARDED VIDEO'),
+                  onPressed: () {
+                    ads.showVideoAd(state: this);
+                  },
                 ),
-              ),
-              Positioned(
-                bottom: -0.0,
-                right: 0.0,
-                left: 0.0,
-                height: 230.0,
-                child: AspectRatio(
-                  aspectRatio: 300 / 145,
-                  child: Image.network(
-                    loadedSweepstake.imageUrl,
-                  ),
+                Text(
+                  "You have $_coins coins.",
+                  key: ValueKey<String>('COINS'),
                 ),
-              ),
-              Positioned(
-                bottom: -260.0,
-                right: 0.0,
-                left: 0.0,
-                height: 250.0,
-                child: AspectRatio(
-                  aspectRatio: 300 / 145,
-                  child: Text(
-                    '\$${loadedSweepstake.price.toString()}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 23),
-                  ),
-                ),
-              ),
-            ],
+              ].map((Widget button) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: button,
+                );
+              }).toList(),
+            ),
           ),
-          SizedBox(
-            height: 125,
-          ),
-          RaisedButton(
-            child: Text('Enter to Win'),
-            onPressed: () {
-              // setState(() {
-              //   if (position == DiagonalPosition.BOTTOM_LEFT) {
-              //     position = DiagonalPosition.BOTTOM_RIGHT;
-              //   } else {
-              //     position = DiagonalPosition.BOTTOM_LEFT;
-              //   }
-              // });
-              ads.showVideoAd(state: this);
-
-              result.addItem(loadedSweepstake.id, loadedSweepstake.randomNumber,
-                  loadedSweepstake.title);
-              Navigator.of(context).pushNamed(ResultScreen.routeName);
-            },
-          ),
-          RaisedButton(
-            child: Text('View Restrictions'),
-            onPressed: () {
-              // setState(() {
-              //   if (clipHeight == containerHeight * 0.35) {
-              //     clipHeight = containerHeight * 0.10;
-              //   } else {
-              //     clipHeight = containerHeight * 0.35;
-              //   }
-              // });
-            },
-          )
-        ],
+        ),
       ),
     );
   }
