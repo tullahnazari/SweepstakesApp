@@ -11,6 +11,7 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final resultItems = Provider.of<Result>(context);
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -34,15 +35,6 @@ class ResultScreen extends StatelessWidget {
             ),
             SizedBox(
               height: 20,
-            ),
-            Center(
-              child: RaisedButton(
-                child: Text('Go back to Sweeps'),
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(SweepstakesOverview.routeName);
-                },
-              ),
             ),
           ],
         ),
