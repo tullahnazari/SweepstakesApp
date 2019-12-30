@@ -4,8 +4,24 @@ import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatelessWidget {
+class SweepstakesOverview extends StatefulWidget {
   static const routeName = '/sweepstakeoverview';
+
+  @override
+  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
+}
+
+class _SweepstakesOverviewState extends State<SweepstakesOverview> {
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    _isLoading = true;
+    Provider.of<Sweepstakes>(context, listen: false).fetchAndSetProducts();
+    _isLoading = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final loadedSweepstakeData = Provider.of<Sweepstakes>(context);
@@ -19,7 +35,9 @@ class SweepstakesOverview extends StatelessWidget {
         ],
         title: Text(
           'Active Sweeps',
-          style: TextStyle(color: Theme.of(context).accentColor),
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
       ),
       body: ListView.builder(

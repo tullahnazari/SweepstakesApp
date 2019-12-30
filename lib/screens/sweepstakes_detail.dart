@@ -487,10 +487,13 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-        loadedSweepstake.title,
-        style: TextStyle(color: Theme.of(context).accentColor),
-      )),
+        title: Text(
+          loadedSweepstake.title,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: Column(
         children: <Widget>[
           Stack(
