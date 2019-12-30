@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/result.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/sweepstakes_overview.dart';
 
 class ResultScreen extends StatelessWidget {
   //giving page route name
@@ -10,6 +11,7 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final resultItems = Provider.of<Result>(context);
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -30,6 +32,9 @@ class ResultScreen extends StatelessWidget {
                 resultItems.generateRandomNumber.toString(),
                 style: TextStyle(fontSize: 34),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
           ],
         ),
