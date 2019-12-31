@@ -23,7 +23,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
 
   var _initValues = {
     'title': '',
-    'description': '',
+    'dateTime': '',
     'price': '',
     'imageUrl': '',
   };
@@ -33,7 +33,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
 
   //focuses on next input on keyboard after you click next
   final _priceFocusNode = FocusNode();
-  final _descriptionFocusNode = FocusNode();
+  final _dateTimeFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
 
   //custom text editing controller
@@ -56,7 +56,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
             .findById(productId);
         _initValues = {
           'title': _editedProduct.title,
-          'description': _editedProduct.dateTime,
+          'dateTime': _editedProduct.dateTime,
           'price': _editedProduct.price.toString(),
           'imageUrl': '',
         };
@@ -73,7 +73,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
     // TODO: implement dispose
     _imageUrlFocusNode.removeListener(_updateImageUrl);
     _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
+    _dateTimeFocusNode.dispose();
     _imageUrlController.dispose();
     _imageUrlFocusNode.dispose();
     super.dispose();
@@ -85,7 +85,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -95,22 +95,33 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Sweepstakes>(context, listen: false)
+      await Provider.of<Sweepstakes>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
     } else {
-      Provider.of<Sweepstakes>(context, listen: false)
-          .addProduct(_editedProduct)
-          .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
-      });
+      try {
+        await Provider.of<Sweepstakes>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('an error occured!'),
+                  content: Text('Uh oh, something went wrong :('),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Okay'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -177,7 +188,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                         focusNode: _priceFocusNode,
                         onFieldSubmitted: (_) {
                           FocusScope.of(context)
-                              .requestFocus(_descriptionFocusNode);
+                              .requestFocus(_dateTimeFocusNode);
                         },
                         validator: (value) {
                           if (value.isEmpty) {
@@ -206,7 +217,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                         decoration: InputDecoration(labelText: 'Date'),
                         maxLines: 3,
                         keyboardType: TextInputType.multiline,
-                        focusNode: _descriptionFocusNode,
+                        focusNode: _dateTimeFocusNode,
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter a date';
@@ -222,6 +233,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                             price: _editedProduct.price,
                             dateTime: value,
                             imageUrl: _editedProduct.imageUrl,
+                            id: _editedProduct.id,
                           );
                         },
                       ),
