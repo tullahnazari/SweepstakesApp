@@ -1,4 +1,7 @@
+import 'package:ads/admob.dart';
 import 'package:clippy_flutter/diagonal.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/models/sweepstake.dart';
@@ -31,11 +34,16 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
 
   int _coins = 0;
   RewardedVideoAd videoAd = RewardedVideoAd.instance;
-
+  var isLoaded = false;
   @override
   void initState() {
     super.initState();
     FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
+    videoAd.load(
+        adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetinginfo);
+    setState(() {
+      isLoaded = true;
+    });
 
     videoAd.listener =
         (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
@@ -126,10 +134,16 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
           RaisedButton(
             child: Text('Enter to Win'),
             onPressed: () {
-              videoAd.load(
-                  adUnitId: RewardedVideoAd.testAdUnitId,
-                  targetingInfo: targetinginfo);
-              videoAd.show();
+              // event != RewardedVideoAdEvent.loaded
+              //     ? videoAd.show()
+              //     : Flushbar(
+              //         title: "Please wait for ad to loadxx",
+              //       );
+              isLoaded
+                  ? videoAd.show()
+                  : Flushbar(
+                      title: "still loading",
+                    );
 
               // setState(() {
               //   if (position == DiagonalPosition.BOTTOM_LEFT) {
@@ -141,13 +155,12 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
               //ads.showVideoAd(state: this);
               //Future.delayed(const Duration(seconds: 5));
 
-              navigateToNextPage(result, loadedSweepstake, context);
+              //navigateToNextPage(result, loadedSweepstake, context);
             },
           ),
           RaisedButton(
             child: Text('Load rewarded video ad'),
             onPressed: () {
-              videoAd.show();
               // setState(() {
               //   if (clipHeight == containerHeight * 0.35) {
               //     clipHeight = containerHeight * 0.10;
