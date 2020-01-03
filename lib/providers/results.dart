@@ -1,14 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-
-class ResultItem {
-  final String id;
-  final String title;
-  final int randomNumber;
-
-  ResultItem({this.id, this.title, this.randomNumber});
-}
+import 'package:sweepstakes/models/result.dart';
 
 class Result with ChangeNotifier {
   //map with productid for product model and cart model
