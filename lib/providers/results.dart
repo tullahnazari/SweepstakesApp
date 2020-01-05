@@ -8,6 +8,10 @@ import 'package:sweepstakes/models/sweepstake.dart';
 class Results with ChangeNotifier {
   List<ResultItem> _resultItems = [];
 
+  final String authToken;
+
+  Results(this.authToken, this._resultItems);
+
   List<ResultItem> get items {
     return [..._resultItems];
   }
@@ -17,7 +21,8 @@ class Results with ChangeNotifier {
   }
 
   Future<void> fetchAndSetResults() async {
-    final url = 'https://sweepsteaks-31629.firebaseio.com/results.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/results.json?auth=$authToken';
     final response = await http.get(url);
     final List<ResultItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -40,7 +45,8 @@ class Results with ChangeNotifier {
   //ADD entry to contest
   Future<void> enterSweepstake(ResultItem result, Sweepstake sweepstake) async {
     //send https request
-    final url = 'https://sweepsteaks-31629.firebaseio.com/results.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/results.json?auth=$authToken';
     var title = sweepstake.title;
     final randomNumber = generateRandomNumber;
     try {
