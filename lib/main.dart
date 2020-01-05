@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
     //ability to add multiple providers at root of app
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
         ChangeNotifierProvider.value(
           value: Sweepstakes(),
         ),
