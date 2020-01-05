@@ -4,9 +4,9 @@ import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
+import 'package:sweepstakes/widgets/result_item.dart';
 
 class ResultScreen extends StatefulWidget {
-  ResultScreen();
   //giving page route name
   static const routeName = '/results';
 
@@ -17,43 +17,33 @@ class ResultScreen extends StatefulWidget {
 class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
-    final resultItem = Provider.of<ResultItem>(context);
-    final resultId = ModalRoute.of(context).settings.arguments as String;
-
-    final loadedresult = Provider.of<Sweepstakes>(
-      context,
-      listen: false,
-    ).findById(resultId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(loadedresult.title),
+        title: Text("My Sweepstake"),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 70,
-            ),
-            Center(
-              child: Text(
-                'Your Number is: ',
-                style: TextStyle(fontSize: 34),
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: Text(
-                resultItem.randomNumber.toString(),
-                style: TextStyle(fontSize: 34),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future:
+            Provider.of<Results>(context, listen: false).fetchAndSetResults(),
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            if (dataSnapshot.error != null) {
+              // ...
+              // Do error handling stuff
+              return Center(
+                child: Text('An error occurred!'),
+              );
+            } else {
+              return Consumer<Results>(
+                builder: (ctx, orderData, child) => ListView.builder(
+                  itemCount: orderData.items.length,
+                  itemBuilder: (ctx, i) => ResultItemWidget(orderData.items[i]),
+                ),
+              );
+            }
+          }
+        },
       ),
     );
   }

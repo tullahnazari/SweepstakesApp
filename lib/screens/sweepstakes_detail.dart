@@ -157,10 +157,10 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
               //ads.showVideoAd(state: this);
               //Future.delayed(const Duration(seconds: 5));
 
-              await Provider.of<Results>(context, listen: false)
-                  .enterSweepstake(resultItem, loadedSweepstake);
+              // await Provider.of<Results>(context, listen: false)
+              //     .enterSweepstake(resultItem, loadedSweepstake);
 
-              // navigateToNextPage(resultItem, loadedSweepstake);
+              navigateToNextPage(resultItem, loadedSweepstake);
             },
           ),
           RaisedButton(
@@ -181,11 +181,11 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
     );
   }
 
-  // Future<void> navigateToNextPage(
-  //     ResultItem loadedSweepstake, Sweepstake result) async {
-  //   await Provider.of<Results>(context, listen: false)
-  //       .enterSweepstake(loadedSweepstake, result);
-  //   await Navigator.of(context).pushNamed(ResultScreen.routeName);
-  //   print('navigate to next page');
-  // }
+  Future<void> navigateToNextPage(
+      ResultItem loadedSweepstake, Sweepstake result) async {
+    await Provider.of<Results>(context, listen: false)
+        .enterSweepstake(loadedSweepstake, result);
+    await Navigator.of(context).pushNamed(ResultScreen.routeName);
+    print('navigate to next page');
+  }
 }

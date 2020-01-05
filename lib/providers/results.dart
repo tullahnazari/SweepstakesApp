@@ -6,14 +6,35 @@ import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/models/sweepstake.dart';
 
 class Results with ChangeNotifier {
-  List<ResultItem> _items = [];
+  List<ResultItem> _resultItems = [];
 
-  Map<String, ResultItem> get items {
-    return {...items};
+  List<ResultItem> get items {
+    return [..._resultItems];
   }
 
   ResultItem findById(String id) {
-    return _items.firstWhere((prod) => prod.id == id);
+    return _resultItems.firstWhere((prod) => prod.id == id);
+  }
+
+  Future<void> fetchAndSetResults() async {
+    final url = 'https://sweepsteaks-31629.firebaseio.com/results.json';
+    final response = await http.get(url);
+    final List<ResultItem> loadedOrders = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((orderId, orderData) {
+      loadedOrders.add(
+        ResultItem(
+          id: orderId,
+          title: orderData['amount'],
+          randomNumber: orderData['randomNumber'],
+        ),
+      );
+    });
+    _resultItems = loadedOrders;
+    notifyListeners();
   }
 
   //ADD entry to contest
@@ -32,11 +53,11 @@ class Results with ChangeNotifier {
         }),
       );
       final newContest = ResultItem(
+        id: json.decode(response.body)['name'],
         title: title,
         randomNumber: randomNumber,
-        id: json.decode(response.body)['name'],
       );
-      _items.add(newContest);
+      _resultItems.add(newContest);
       notifyListeners();
     } catch (error) {
       print(error);
