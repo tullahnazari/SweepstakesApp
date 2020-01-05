@@ -45,8 +45,9 @@ class Sweepstakes with ChangeNotifier {
   ];
 
   final String authToken;
+  final String userId;
 
-  Sweepstakes(this.authToken, this._items);
+  Sweepstakes(this.authToken, this.userId, this._items);
 
   //MAKING IT SO ONLY DATA INSIDE HERE IS CHANGED FOR PRODUCT DATA
   List<Sweepstake> get items {
@@ -59,7 +60,7 @@ class Sweepstakes with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url =
-        'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json?auth=$authToken';
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
@@ -88,7 +89,7 @@ class Sweepstakes with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
-          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.json';
+          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.jsonauth=$authToken';
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -106,7 +107,7 @@ class Sweepstakes with ChangeNotifier {
   Future<void> addProduct(Sweepstake product) async {
     //send https request
     final url =
-        'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json?auth=$authToken';
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
     try {
       final response = await http.post(
         url,

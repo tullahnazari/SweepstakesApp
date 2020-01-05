@@ -26,12 +26,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Auth, Sweepstakes>(
           update: (ctx, auth, previousProducts) => Sweepstakes(
             auth.token,
+            auth.userId,
             previousProducts == null ? [] : previousProducts.items,
           ),
         ),
         ChangeNotifierProxyProvider<Auth, Results>(
           update: (ctx, auth, previousOrders) => Results(
             auth.token,
+            auth.userId,
             previousOrders == null ? [] : previousOrders.items,
           ),
         ),
