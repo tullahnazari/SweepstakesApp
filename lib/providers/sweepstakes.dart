@@ -105,6 +105,7 @@ class Sweepstakes with ChangeNotifier {
       final response = await http.post(
         url,
         body: json.encode({
+          'id': product.id,
           'title': product.title,
           'dateTime': product.dateTime,
           'imageUrl': product.imageUrl,

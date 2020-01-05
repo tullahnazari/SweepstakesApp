@@ -4,8 +4,9 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/models/sweepstake.dart';
-import 'package:sweepstakes/providers/result.dart';
+import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/widgets/animation.dart';
@@ -65,7 +66,8 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
     final sweepstakeId = ModalRoute.of(context).settings.arguments as String;
     final loadedSweepstake =
         Provider.of<Sweepstakes>(context).findById(sweepstakeId);
-    final result = Provider.of<Result>(context, listen: false);
+    final resultItem = Provider.of<ResultItem>(context);
+    final result = Provider.of<Results>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -133,17 +135,17 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
           ),
           RaisedButton(
             child: Text('Enter to Win'),
-            onPressed: () {
+            onPressed: () async {
               // event != RewardedVideoAdEvent.loaded
               //     ? videoAd.show()
               //     : Flushbar(
               //         title: "Please wait for ad to loadxx",
               //       );
-              isLoaded
-                  ? videoAd.show()
-                  : Flushbar(
-                      title: "still loading",
-                    );
+              // isLoaded
+              //     ? videoAd.show()
+              //     : Flushbar(
+              //         title: "still loading",
+              //       );
 
               // setState(() {
               //   if (position == DiagonalPosition.BOTTOM_LEFT) {
@@ -155,7 +157,10 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
               //ads.showVideoAd(state: this);
               //Future.delayed(const Duration(seconds: 5));
 
-              //navigateToNextPage(result, loadedSweepstake, context);
+              // await Provider.of<Results>(context, listen: false)
+              //     .enterSweepstake(resultItem, loadedSweepstake);
+
+              navigateToNextPage(resultItem, loadedSweepstake);
             },
           ),
           RaisedButton(
@@ -177,9 +182,9 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
   }
 
   Future<void> navigateToNextPage(
-      Result result, Sweepstake loadedSweepstake, BuildContext context) async {
-    await result.addItem(loadedSweepstake.id, loadedSweepstake.randomNumber,
-        loadedSweepstake.title);
+      ResultItem loadedSweepstake, Sweepstake result) async {
+    await Provider.of<Results>(context, listen: false)
+        .enterSweepstake(loadedSweepstake, result);
     await Navigator.of(context).pushNamed(ResultScreen.routeName);
     print('navigate to next page');
   }
