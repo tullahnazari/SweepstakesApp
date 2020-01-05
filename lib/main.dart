@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
+import 'package:sweepstakes/screens/auth-screen.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
@@ -19,31 +21,43 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: Sweepstakes(),
+          value: Auth(),
         ),
-        ChangeNotifierProvider.value(
-          value: Results(),
+        ChangeNotifierProxyProvider<Auth, Sweepstakes>(
+          update: (ctx, auth, previousProducts) => Sweepstakes(
+            auth.token,
+            auth.userId,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Results>(
+          update: (ctx, auth, previousOrders) => Results(
+            auth.token,
+            auth.userId,
+            previousOrders == null ? [] : previousOrders.items,
+          ),
         ),
         ChangeNotifierProvider.value(
           value: ResultItem(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Sweepstakes',
-        theme: ThemeData(
-          primaryColor: Colors.amber,
-          accentColor: Colors.white,
-          fontFamily: 'Lato',
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Sweepstakes',
+          theme: ThemeData(
+            primaryColor: Colors.amber,
+            accentColor: Colors.white,
+            fontFamily: 'Lato',
+          ),
+          home: auth.isAuth ? SweepstakesOverview() : AuthScreen(),
+          routes: {
+            SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
+            ResultScreen.routeName: (ctx) => ResultScreen(),
+            AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
+            SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
+            SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
+          },
         ),
-        home: //AdPage(),
-            SweepstakesOverview(),
-        routes: {
-          SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
-          ResultScreen.routeName: (ctx) => ResultScreen(),
-          AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
-          SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
-          SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
-        },
       ),
     );
   }

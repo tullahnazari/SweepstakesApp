@@ -44,6 +44,11 @@ class Sweepstakes with ChangeNotifier {
     //     dateTime: '12/28/2020'),
   ];
 
+  final String authToken;
+  final String userId;
+
+  Sweepstakes(this.authToken, this.userId, this._items);
+
   //MAKING IT SO ONLY DATA INSIDE HERE IS CHANGED FOR PRODUCT DATA
   List<Sweepstake> get items {
     return [..._items];
@@ -54,7 +59,8 @@ class Sweepstakes with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
@@ -83,7 +89,7 @@ class Sweepstakes with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
-          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.json';
+          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.jsonauth=$authToken';
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -100,7 +106,8 @@ class Sweepstakes with ChangeNotifier {
 
   Future<void> addProduct(Sweepstake product) async {
     //send https request
-    const url = 'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
     try {
       final response = await http.post(
         url,
@@ -136,7 +143,9 @@ class Sweepstakes with ChangeNotifier {
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
-      throw HttpException('Can not delete product');
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete sweepstake.');
     }
     existingProduct = null;
   }
