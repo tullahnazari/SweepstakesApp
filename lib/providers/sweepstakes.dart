@@ -44,6 +44,10 @@ class Sweepstakes with ChangeNotifier {
     //     dateTime: '12/28/2020'),
   ];
 
+  final String authToken;
+
+  Sweepstakes(this.authToken, this._items);
+
   //MAKING IT SO ONLY DATA INSIDE HERE IS CHANGED FOR PRODUCT DATA
   List<Sweepstake> get items {
     return [..._items];
@@ -54,7 +58,8 @@ class Sweepstakes with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
@@ -100,7 +105,8 @@ class Sweepstakes with ChangeNotifier {
 
   Future<void> addProduct(Sweepstake product) async {
     //send https request
-    const url = 'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json';
+    final url =
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes.json?auth=$authToken';
     try {
       final response = await http.post(
         url,
@@ -136,7 +142,9 @@ class Sweepstakes with ChangeNotifier {
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
-      throw HttpException('Can not delete product');
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete sweepstake.');
     }
     existingProduct = null;
   }

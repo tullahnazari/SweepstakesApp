@@ -23,8 +23,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
-        ChangeNotifierProvider.value(
-          value: Sweepstakes(),
+        ChangeNotifierProxyProvider<Auth, Sweepstakes>(
+          update: (ctx, auth, previousProducts) => Sweepstakes(
+            auth.token,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
         ),
         ChangeNotifierProvider.value(
           value: Results(),
@@ -33,21 +36,23 @@ class MyApp extends StatelessWidget {
           value: ResultItem(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Sweepstakes',
-        theme: ThemeData(
-          primaryColor: Colors.amber,
-          accentColor: Colors.white,
-          fontFamily: 'Lato',
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Sweepstakes',
+          theme: ThemeData(
+            primaryColor: Colors.amber,
+            accentColor: Colors.white,
+            fontFamily: 'Lato',
+          ),
+          home: auth.isAuth ? SweepstakesOverview() : AuthScreen(),
+          routes: {
+            SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
+            ResultScreen.routeName: (ctx) => ResultScreen(),
+            AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
+            SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
+            SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
+          },
         ),
-        home: AuthScreen(),
-        routes: {
-          SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
-          ResultScreen.routeName: (ctx) => ResultScreen(),
-          AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
-          SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
-          SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
-        },
       ),
     );
   }
