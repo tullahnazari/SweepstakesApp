@@ -28,7 +28,7 @@ class Results with ChangeNotifier {
       loadedOrders.add(
         ResultItem(
           id: orderId,
-          title: orderData['amount'],
+          title: orderData['title'],
           randomNumber: orderData['randomNumber'],
         ),
       );
