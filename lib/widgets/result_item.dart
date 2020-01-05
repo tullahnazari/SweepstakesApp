@@ -20,7 +20,7 @@ class _ResultItemWidget extends State<ResultItemWidget> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text(widget.order.title ?? 'default value'),
+            title: Text(widget.order.title ?? 'Sweepstake'),
             subtitle: Text(widget.order.randomNumber.toString()),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
