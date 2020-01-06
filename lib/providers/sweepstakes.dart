@@ -60,7 +60,7 @@ class Sweepstakes with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url =
-        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
@@ -89,7 +89,7 @@ class Sweepstakes with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
-          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.jsonauth=$authToken';
+          'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -107,7 +107,7 @@ class Sweepstakes with ChangeNotifier {
   Future<void> addProduct(Sweepstake product) async {
     //send https request
     final url =
-        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/$userId.json?auth=$authToken';
+        'https://sweepsteaks-31629.firebaseio.com/sweepstakes/.json?auth=$authToken';
     try {
       final response = await http.post(
         url,
