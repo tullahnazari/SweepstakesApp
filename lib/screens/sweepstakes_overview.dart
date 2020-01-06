@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
@@ -31,7 +32,20 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          Icon(Icons.notifications),
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: FlatButton(
+                    child: Text("Logout"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/');
+                      Provider.of<Auth>(context, listen: false).logout();
+                    }),
+              ),
+            ],
+          ),
         ],
         title: Text(
           'Active Sweeps',
@@ -40,18 +54,22 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           ),
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(15),
-        itemCount: loadedSweepstake.length,
-        itemBuilder: (ctx, i) => SweepstakeItems(
-          id: loadedSweepstake[i].id,
-          title: loadedSweepstake[i].title,
-          imageUrl: loadedSweepstake[i].imageUrl,
-          price: loadedSweepstake[i].price,
-          dateTime: loadedSweepstake[i].dateTime,
-        ),
-        scrollDirection: Axis.vertical,
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(15),
+              itemCount: loadedSweepstake.length,
+              itemBuilder: (ctx, i) => SweepstakeItems(
+                id: loadedSweepstake[i].id,
+                title: loadedSweepstake[i].title,
+                imageUrl: loadedSweepstake[i].imageUrl,
+                price: loadedSweepstake[i].price,
+                dateTime: loadedSweepstake[i].dateTime,
+              ),
+              scrollDirection: Axis.vertical,
+            ),
     );
   }
 }

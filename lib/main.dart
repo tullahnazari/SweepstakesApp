@@ -7,6 +7,7 @@ import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/screens/auth-screen.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
+import 'package:sweepstakes/screens/spash_screen.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
@@ -49,7 +50,16 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.white,
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth ? SweepstakesOverview() : AuthScreen(),
+          home: auth.isAuth
+              ? SweepstakesOverview()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           routes: {
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             ResultScreen.routeName: (ctx) => ResultScreen(),
