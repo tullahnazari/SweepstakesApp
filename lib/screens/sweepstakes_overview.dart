@@ -14,12 +14,22 @@ class SweepstakesOverview extends StatefulWidget {
 
 class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
+  var _isInit = true;
 
   @override
   void initState() {
-    _isLoading = true;
-    Provider.of<Sweepstakes>(context, listen: false).fetchAndSetProducts();
-    _isLoading = false;
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Sweepstakes>(context, listen: false)
+          .fetchAndSetProducts()
+          .then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
     super.initState();
   }
 
