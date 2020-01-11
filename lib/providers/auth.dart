@@ -51,9 +51,7 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
-      if (signup == true) {
-        await UserTableRoles(uid: userId).updateUserData(false);
-      }
+
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
@@ -63,6 +61,9 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+      if (signup == true) {
+        await UserTableRoles(uid: _userId).updateUserData(false, email);
+      }
       notifyListeners();
     } catch (error) {
       throw error;

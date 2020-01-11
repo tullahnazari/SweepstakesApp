@@ -7,7 +7,9 @@ class UserTableRoles {
   final CollectionReference usersCollection =
       Firestore.instance.collection('users');
 
-  Future updateUserData(bool isAdmin) async {
-    return await usersCollection.document(uid).setData({'isAdmin': false});
+  Future updateUserData(bool isAdmin, String email) async {
+    return await usersCollection
+        .document(uid)
+        .setData({'isAdmin': false, 'email': email});
   }
 }
