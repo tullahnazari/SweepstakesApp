@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweepstakes/models/http_exception.dart';
+import 'package:sweepstakes/providers/user_table_roles.dart';
 
 class Auth with ChangeNotifier {
   String _token;
@@ -32,7 +33,7 @@ class Auth with ChangeNotifier {
 
   //reusable in two endpoints with parameters
   Future<void> _authenticate(
-      String email, String password, String urlSegment) async {
+      String email, String password, String urlSegment, bool signup) async {
     final url =
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDMZyZCL-6cYSYSras3XcIXZztPpdRxxtM';
     try {
@@ -50,6 +51,7 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
@@ -59,6 +61,9 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+      if (signup == true) {
+        await UserTableRoles(uid: _userId).updateUserData(false, email);
+      }
       notifyListeners();
     } catch (error) {
       throw error;
@@ -66,11 +71,11 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signup(String email, String password) async {
-    return _authenticate(email, password, 'signUp');
+    return _authenticate(email, password, 'signUp', true);
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, 'signInWithPassword', false);
   }
 
   Future<bool> tryAutoLogin() async {
