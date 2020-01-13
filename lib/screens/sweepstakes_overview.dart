@@ -43,86 +43,47 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     final userProvider = Provider.of<Auth>(context);
 
     return Scaffold(
-        drawer: AppDrawer(),
-        appBar: AppBar(
-          actions: <Widget>[
-            PopupMenuButton(
-              icon: Icon(Icons.more_vert),
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  child: FlatButton(
-                      child: Text("Logout"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushReplacementNamed('/');
-                        Provider.of<Auth>(context, listen: false).logout();
-                      }),
-                ),
-              ],
-            ),
-          ],
-          title: Text(
-            'Active Sweeps',
-            style: TextStyle(
-              color: Colors.black,
-            ),
+      drawer: AppDrawer(),
+      appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: FlatButton(
+                    child: Text("Logout"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/');
+                      Provider.of<Auth>(context, listen: false).logout();
+                    }),
+              ),
+            ],
+          ),
+        ],
+        title: Text(
+          'Active Sweeps',
+          style: TextStyle(
+            color: Colors.black,
           ),
         ),
-        body: StreamBuilder<DocumentSnapshot>(
-          stream: Firestore.instance
-              .collection('users')
-              .document(userProvider.userId)
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Text('Loading..');
-              default:
-                return checkRole(snapshot.data);
-            }
-          },
-        )
-
-        // _isLoading
-        //     ? Center(
-        //         child: CircularProgressIndicator(),
-        //       )
-        //     : ListView.builder(
-        //         padding: const EdgeInsets.all(15),
-        //         itemCount: loadedSweepstake.length,
-        //         itemBuilder: (ctx, i) => SweepstakeItems(
-        //           id: loadedSweepstake[i].id,
-        //           title: loadedSweepstake[i].title,
-        //           imageUrl: loadedSweepstake[i].imageUrl,
-        //           price: loadedSweepstake[i].price,
-        //           dateTime: loadedSweepstake[i].dateTime,
-        //         ),
-        //         scrollDirection: Axis.vertical,
-        //       ),
-        );
-  }
-
-  checkRole(DocumentSnapshot snapshot) {
-    if (snapshot.data['isAdmin'] == true) {
-      return adminPage(snapshot);
-    } else {
-      return notAdmin(snapshot);
-    }
-  }
-
-  Center adminPage(DocumentSnapshot snapshot) {
-    return Center(
-      child: Text("I AM ADMIN"),
-    );
-  }
-
-  Center notAdmin(DocumentSnapshot snapshot) {
-    return Center(
-      child: Text("I AM NOT ADMIN"),
+      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(15),
+              itemCount: loadedSweepstake.length,
+              itemBuilder: (ctx, i) => SweepstakeItems(
+                id: loadedSweepstake[i].id,
+                title: loadedSweepstake[i].title,
+                imageUrl: loadedSweepstake[i].imageUrl,
+                price: loadedSweepstake[i].price,
+                dateTime: loadedSweepstake[i].dateTime,
+              ),
+              scrollDirection: Axis.vertical,
+            ),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:sweepstakes/screens/spash_screen.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
+import 'package:sweepstakes/screens/your_sweepstake.dart';
 
 void main() => runApp(MyApp());
 
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
             AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
+            YourSweepstake.routeName: (ctx) => YourSweepstake(),
           },
         ),
       ),
