@@ -31,6 +31,8 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
+  bool isAdmin;
+
   //reusable in two endpoints with parameters
   Future<void> _authenticate(
       String email, String password, String urlSegment, bool signup) async {
@@ -62,7 +64,7 @@ class Auth with ChangeNotifier {
         ),
       );
       if (signup == true) {
-        await UserTableRoles(uid: _userId).updateUserData(false, email);
+        await UserTableRoles(uid: _userId).updateUserData(isAdmin, email);
       }
       notifyListeners();
     } catch (error) {
