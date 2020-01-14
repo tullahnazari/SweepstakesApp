@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/providers/user_table_roles.dart';
+import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
@@ -37,6 +40,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   Widget build(BuildContext context) {
     final loadedSweepstakeData = Provider.of<Sweepstakes>(context);
     final loadedSweepstake = loadedSweepstakeData.items;
+    final userProvider = Provider.of<Auth>(context);
 
     return Scaffold(
       drawer: AppDrawer(),
