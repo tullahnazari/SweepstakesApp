@@ -38,10 +38,12 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
   var isLoaded = false;
   @override
   void initState() {
-    super.initState();
     FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
     videoAd.load(
         adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetinginfo);
+
+    super.initState();
+
     setState(() {
       isLoaded = true;
     });
@@ -136,6 +138,10 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
           RaisedButton(
             child: Text('Enter to Win'),
             onPressed: () async {
+              Center(
+                child: CircularProgressIndicator(),
+              );
+              videoAd.show();
               // event != RewardedVideoAdEvent.loaded
               //     ? videoAd.show()
               //     : Flushbar(
