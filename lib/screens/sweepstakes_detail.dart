@@ -27,6 +27,16 @@ class SweepstakesDetail extends StatefulWidget {
 class _SweepstakesDetailState extends State<SweepstakesDetail> {
   _SweepstakesDetailState();
 
+  var _isLoading = false;
+
+  Center centerLoading(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
   static const MobileAdTargetingInfo targetinginfo = MobileAdTargetingInfo(
     testDevices: testDevices != null ? <String>['testDevices'] : null,
     keywords: <String>['Book', 'Game'],
@@ -138,10 +148,7 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
           RaisedButton(
             child: Text('Enter to Win'),
             onPressed: () async {
-              Center(
-                child: CircularProgressIndicator(),
-              );
-              videoAd.show();
+              _isLoading ? centerLoading(context) : videoAd.show();
               // event != RewardedVideoAdEvent.loaded
               //     ? videoAd.show()
               //     : Flushbar(

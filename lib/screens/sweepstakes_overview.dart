@@ -40,7 +40,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   Center centerLoading(BuildContext context) {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.black,
+      ),
     );
   }
 
