@@ -20,8 +20,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     if (_isInit) {
+      centerLoading(context);
       setState(() {
         _isLoading = true;
       });
@@ -33,7 +34,16 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         });
       });
     }
-    super.initState();
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  Center centerLoading(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.black,
+      ),
+    );
   }
 
   @override
@@ -70,7 +80,13 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                ),
+              ),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(15),

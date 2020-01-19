@@ -241,7 +241,9 @@ class _AuthCardState extends State<AuthCard> {
                   height: 20,
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator()
+                  CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  )
                 else
                   RaisedButton(
                     child:

@@ -27,6 +27,16 @@ class SweepstakesDetail extends StatefulWidget {
 class _SweepstakesDetailState extends State<SweepstakesDetail> {
   _SweepstakesDetailState();
 
+  var _isLoading = false;
+
+  Center centerLoading(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
   static const MobileAdTargetingInfo targetinginfo = MobileAdTargetingInfo(
     testDevices: testDevices != null ? <String>['testDevices'] : null,
     keywords: <String>['Book', 'Game'],
@@ -38,10 +48,12 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
   var isLoaded = false;
   @override
   void initState() {
-    super.initState();
     FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
     videoAd.load(
         adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetinginfo);
+
+    super.initState();
+
     setState(() {
       isLoaded = true;
     });
@@ -136,6 +148,7 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
           RaisedButton(
             child: Text('Enter to Win'),
             onPressed: () async {
+              _isLoading ? centerLoading(context) : videoAd.show();
               // event != RewardedVideoAdEvent.loaded
               //     ? videoAd.show()
               //     : Flushbar(
