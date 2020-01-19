@@ -142,8 +142,12 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                ),
               ),
             )
           : Padding(

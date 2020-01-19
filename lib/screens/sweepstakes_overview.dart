@@ -79,7 +79,15 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         ),
       ),
       body: _isLoading
-          ? centerLoading(context)
+          ? Center(
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                ),
+              ),
+            )
           : ListView.builder(
               padding: const EdgeInsets.all(15),
               itemCount: loadedSweepstake.length,
